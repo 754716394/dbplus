@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://code.alibabatech.com/schema/dubbo 
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://code.alibabatech.com/schema/dubbo 
+	http://code.alibabatech.com/schema/dubbo/dubbo.xsd"> -->
+
+
+	<!-- 对内直接dubbo 暴露 -->
+	<!-- 定时任务日志服务 406937 刘凡 -->
+	<!--<dubbo:service interface="com.deppon.cubc.tools.client.service.RegularJobLogService"-->
+                   <!--ref="regularJobLogService" version="${tools.dubbo.dubbo_version}" group="${tools.dubbo.dubbo_env}"/>-->
+                   <!---->
+    <!--&lt;!&ndash;定时扫描数据服务&ndash;&gt;-->
+    <!--<dubbo:service interface="com.deppon.cubc.tools.client.service.DtCheckSendMessagesService"-->
+                   <!--ref="dtCheckSendMessagesService" version="${tools.dubbo.dubbo_version}" group="${tools.dubbo.dubbo_env}"/>-->
+</beans>

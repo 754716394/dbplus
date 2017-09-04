@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+       default-autowire="byName">
+
+    <context:annotation-config/>
+
+
+    <bean id="jadeConfigManager" class="com.pamirs.dbplus.configure.manager.impl.JadeConfigManagerImpl"
+          init-method="init">
+        <property name="server" value="online|{121.43.35.10,8082,admin,admin};daily|{121.43.35.10,8082,admin,admin}"/>
+        <property name="configureTotal" value="2"></property>
+        <property name="timeout" value="5000"></property>
+    </bean>
+
+
+    <bean id="jadeMatrixAO" class="com.pamirs.dbplus.configure.ao.impl.JadeMatrixAOImpl">
+        <property name="jadeConfigManager" ref="jadeConfigManager"></property>
+    </bean>
+
+
+</beans>

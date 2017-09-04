@@ -1,0 +1,12 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 收款付款单 & 收款付款单明细 cubc_paycenter & cubc_paydetail -->
+    <!--<dubbo:reference id="collectionPaymentService"-->
+                     <!--interface="com.deppon.cubc.asset.client.paycenter.api.CollectionPaymentService"-->
+                     <!--version="${tools.dubbo.dubbo_version}" group="${tools.dubbo.dubbo_env}"/>-->
+
+</beans>

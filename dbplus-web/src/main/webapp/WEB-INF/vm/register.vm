@@ -1,0 +1,161 @@
+#set($layout="common/layout_blank.vm")
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+    <title>注册</title>
+
+    <link href="/assets/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="/assets/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="/assets/bootstrap/css/docs.css" rel="stylesheet">
+    <link href="/assets/bootstrap/js/google-code-prettify/prettify.css" rel="stylesheet">
+    <link href="/assets/css/basic.css" rel="stylesheet">
+    <style type="text/css">
+    	body {
+        	padding-top: 40px;
+        	padding-bottom: 40px;
+        }
+        
+        .form-signin {
+        	max-width: 800px;
+        	padding: 19px 29px 29px;
+        	margin: 0 auto 20px;
+        	background-color: #fff;
+        	border: 1px solid #e5e5e5;
+        	-webkit-border-radius: 5px;
+        	-moz-border-radius: 5px;
+        	border-radius: 5px;
+        	-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+        	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+        	box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+        }
+        
+        .form-signin .form-signin-heading,.form-signin .checkbox {
+        	margin-bottom: 10px;
+        }
+        
+        .form-signin input[type="text"],.form-signin input[type="password"] {
+        	font-size: 16px;
+        	height: auto;
+        	padding: 7px 9px;
+        }
+        
+        .help-inline {
+        	width: 300px;
+        	font-size: 12px;
+        }
+        
+        .register_error {
+        	max-width: 800px;
+        }
+        
+        h2 {
+        	margin-left: 180px;
+        	margin-bottom: 30px;
+        	color: #444;
+        }
+	</style>
+</head>
+
+<body style="background:url(/assets/img/rg_bg.jpg);">
+	
+        <form class="form-horizontal form-signin" id="query_form" action="/account/user/register" method="POST">
+            <h2 class="form-signin-heading">平台账号申请</h2>
+            <fieldset>
+                <div class="control-group">
+                    <label class="control-label" for="nick">昵称</label>
+                    <div class="controls controls-row">
+                        <input type="text" class="input-xlarge" id="nick" name="nick" />
+                        <span class="help-inline">
+                            
+                        </span>
+                    </div>
+                </div>
+                <div class="control-group" id="nick_control">
+                    <label class="control-label" for="name">用户名</label>
+                    <div class="controls controls-row">
+                        <input type="text" class="input-xlarge" id="name" name="name" required placeholder="*必填"/>
+                        <span class="help-inline">
+
+                        </span>
+                    </div>
+                </div>
+                <div class="control-group" id="email_control">
+                    <label class="control-label" for="email">邮箱</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="email" name="email" required placeholder="*必填"/>
+                        <span class="help-inline">
+                            
+                        </span>
+                    </div>
+                </div>
+                <div class="control-group" id="password_control">
+                    <label class="control-label" for="password">密码</label>
+                    <div class="controls">
+                        <input type="password" class="input-xlarge" id="password" name="password" required placeholder="*必填"/>
+						<span class="help-inline">
+                            
+                        </span>
+                    </div>
+                </div>
+    			<div class="control-group" id="repassword_control">
+                    <label class="control-label" for="repassword">密码重复</label>
+                    <div class="controls">
+                        <input type="password" class="input-xlarge" id="repassword" name="repassword"/>
+                        <span class="help-inline">
+                            
+                        </span>
+                    </div>
+                </div>
+
+                <div style="margin-left: 180px;">
+                    <button type="submit" class="btn btn-primary">申请加入</button>
+                    <a class="btn" href="/login">取消</a>
+                </div>
+            </fieldset>
+        </form>
+			
+        <!-- Alert -->
+        <div id="alert_pop" class="modal hide fade" aria-hidden="true">
+            <p id="alert_text">提醒</p>
+        </div>
+        
+        <!-- Warning -->
+        <div id="warning_pop" class="modal hide fade" aria-hidden="true">
+            <p id="warning_text">警告</p>
+        </div>
+        <!-- pop -->
+        <div id="pop_here"></div>
+        <!-- redirect flag -->
+        <div id="is_not_redirect" data="false"></div>
+        	
+        <script src="/assets/bootstrap/js/jquery.js"></script>
+        <script src="/assets/bootstrap/js/google-code-prettify/prettify.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-affix.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-transition.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-alert.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-modal.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-dropdown.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-scrollspy.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-tab.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-tooltip.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-popover.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-button.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-collapse.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-carousel.js"></script>
+        <script src="/assets/bootstrap/js/bootstrap-typeahead.js"></script>
+        <script src="/assets/bootstrap/js/application.js"></script>
+        
+        
+        
+        <script src="/assets/js/basic.js"></script>
+		<script src="/assets/js/form.js"></script>
+        <script src="/assets/js/account/user.js"></script>
+				
+</body>
+</html>
+
+
+
+

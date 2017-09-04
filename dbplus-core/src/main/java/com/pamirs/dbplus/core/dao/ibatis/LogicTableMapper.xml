@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pamirs.dbplus.core.dao.LogicTableDAO" >
+    
+    <resultMap id="BaseResultMap" type="com.pamirs.dbplus.api.model.LogicTableDO" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="matrix_name" property="matrixName" jdbcType="VARCHAR" />
+        <result column="table_name" property="tableName" jdbcType="VARCHAR" />
+        <result column="shard_column" property="shardColumn" jdbcType="VARCHAR" />
+        <result column="shard_rule" property="shardRule" jdbcType="VARCHAR" />
+        <result column="db_group" property="dbGroup" jdbcType="VARCHAR" />
+        <result column="db_count" property="dbCount" jdbcType="INTEGER" />
+        <result column="tb_count" property="tbCount" jdbcType="INTEGER" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modify" property="gmtModify" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, matrix_name, table_name, shard_column, shard_rule, db_group, db_count, tb_count, gmt_create, gmt_modify
+    </sql>
+
+    <select id="selectOne" resultMap="BaseResultMap" parameterType="com.pamirs.dbplus.api.model.LogicTableDO" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_list
+        <include refid="Data_Where_Clause" /> limit 1
+    </select>
+
+    <select id="selectOneById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_list
+        where id = #{id,jdbcType=BIGINT} and is_deleted != 1
+    </select>
+
+    <select id="selectListByMatrixName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_list
+        where matrix_name = #{matrixName,jdbcType=VARCHAR} and is_deleted != 1
+    </select>
+
+    <select id="selectOneByTableName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_list
+        where table_name = #{tableName,jdbcType=VARCHAR} and is_deleted != 1 limit 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap" parameterType="com.pamirs.dbplus.api.query.LogicTableQuery" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_list
+        <include refid="Data_Where_Clause" />
+        <include refid="Data_Where_Plus" />
+    </select>
+
+    <select id="selectListCount" resultType="java.lang.Long" parameterType="com.pamirs.dbplus.api.query.LogicTableQuery" >
+        select count(*) from logic_table_list
+        <include refid="Data_Where_Clause" />
+    </select>
+
+    <select id="selectListByCodes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_list
+        where is_deleted != 1 and event_code in
+        <foreach collection="list" item="code" index="index"
+                 open="(" close=")" separator=",">
+            #{code}
+        </foreach>
+    </select>
+
+    <update id="delete" parameterType="java.lang.Long" >
+        update logic_table_list set is_deleted = 1
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <insert id="insert" parameterType="com.pamirs.dbplus.api.model.LogicTableDO" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="Long"  order="AFTER" keyProperty="id" >
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into logic_table_list
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="matrixName != null" >
+                matrix_name,
+            </if>
+            <if test="tableName != null" >
+                table_name,
+            </if>
+            <if test="shardColumn != null" >
+                shard_column,
+            </if>
+            <if test="shardRule != null" >
+                shard_rule,
+            </if>
+            <if test="dbGroup != null" >
+                db_group,
+            </if>
+            <if test="dbCount != null" >
+                db_count,
+            </if>
+            <if test="tbCount != null" >
+                tb_count,
+            </if>
+            <if test="gmtCreate != null" >
+                gmt_create,
+            </if>
+            <if test="gmtModify != null" >
+                gmt_modify,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="matrixName != null" >
+                #{matrixName,jdbcType=VARCHAR},
+            </if>
+            <if test="tableName != null" >
+                #{tableName,jdbcType=VARCHAR},
+            </if>
+            <if test="shardColumn != null" >
+                #{shardColumn,jdbcType=VARCHAR},
+            </if>
+            <if test="shardRule != null" >
+                #{shardRule,jdbcType=VARCHAR},
+            </if>
+            <if test="dbGroup != null" >
+                #{dbGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="dbCount != null" >
+                #{dbCount,jdbcType=INTEGER},
+            </if>
+            <if test="tbCount != null" >
+                #{tbCount,jdbcType=INTEGER},
+            </if>
+            <if test="gmtCreate != null" >
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModify != null" >
+                #{gmtModify,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.pamirs.dbplus.api.model.LogicTableDO" >
+        update logic_table_list
+        <set >
+            <if test="id != null" >
+                id = #{id,jdbcType=BIGINT},
+            </if>
+            <if test="matrixName != null" >
+                matrix_name = #{matrixName,jdbcType=VARCHAR},
+            </if>
+            <if test="tableName != null" >
+                table_name = #{tableName,jdbcType=VARCHAR},
+            </if>
+            <if test="shardColumn != null" >
+                shard_column = #{shardColumn,jdbcType=VARCHAR},
+            </if>
+            <if test="shardRule != null" >
+                shard_rule = #{shardRule,jdbcType=VARCHAR},
+            </if>
+            <if test="dbGroup != null" >
+                db_group = #{dbGroup,jdbcType=VARCHAR},
+            </if>
+            <if test="dbCount != null" >
+                db_count = #{dbCount,jdbcType=INTEGER},
+            </if>
+            <if test="tbCount != null" >
+                tb_count = #{tbCount,jdbcType=INTEGER},
+            </if>
+            <if test="gmtCreate != null" >
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModify != null" >
+                gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="Data_Where_Clause" >
+        where is_deleted != 1
+        <if test="id != null" >
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="matrixName != null" >
+            and matrix_name = #{matrixName,jdbcType=VARCHAR}
+        </if>
+        <if test="tableName != null" >
+            and table_name = #{tableName,jdbcType=VARCHAR}
+        </if>
+        <if test="shardColumn != null" >
+            and shard_column = #{shardColumn,jdbcType=VARCHAR}
+        </if>
+        <if test="shardRule != null" >
+            and shard_rule = #{shardRule,jdbcType=VARCHAR}
+        </if>
+        <if test="dbGroup != null" >
+            and db_group = #{dbGroup,jdbcType=VARCHAR}
+        </if>
+        <if test="dbCount != null" >
+            and db_count = #{dbCount,jdbcType=INTEGER}
+        </if>
+        <if test="tbCount != null" >
+            and tb_count = #{tbCount,jdbcType=INTEGER}
+        </if>
+        <if test="gmtCreate != null" >
+            and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="gmtModify != null" >
+            and gmt_modify = #{gmtModify,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    <sql id="Data_Where_Plus">
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+        <if test="pageSize != null and start != null">
+            limit #{start}, #{pageSize}
+        </if>
+        <if test="pageSize != null and start == null">
+            limit #{pageSize}
+        </if>
+    </sql>
+
+</mapper>

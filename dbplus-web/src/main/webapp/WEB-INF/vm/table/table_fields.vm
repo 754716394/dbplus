@@ -1,0 +1,228 @@
+<style>
+    .input-label{
+        text-align: right;
+    }
+    /*.ui-draggable, .ui-droppable {*/
+    /*background-position: top;*/
+    /*}*/
+    .sortable{
+        padding: 0;
+        height:auto;
+        overflow: hidden;
+    }
+    .sortable .dragLi,.sortable .dragHead {
+        margin: 0;
+        height:auto;
+        overflow: hidden;
+        border-right:none;
+        border-bottom:none;
+        border-top:1px solid #ddd;
+        border-left:1px solid #ddd;
+    }
+    #Number .dragLiTitle{
+        padding: 10px;
+        border:1px solid #ddd;
+        background: #4abde2;
+        color: #fff;
+        text-align: center;
+    }
+    #Number .dragLi{
+        padding: 10px;
+        border:1px solid #ddd;
+        text-align: center;
+        background: #4abde2;
+        color: #fff;
+    }
+    .sortable .dragHead{
+        border:1px solid #ddd;
+        padding: 10px;
+        background: #4abde2;
+        color: #fff;
+    }
+    .sortable span{
+        display:block;
+        float: left;
+        height:100%;
+        padding: 10px;
+        font-size: 14px;
+        border-right:1px solid #ddd;
+        border-bottom:1px solid #ddd;
+        width:42%;
+    }
+    .sortable .dragHead{
+        float: left;
+        width:42%;
+    }
+    .sortable .check {
+        width:8%;
+        min-width:50px;
+        text-align: center;
+    }
+    .sortable .orderNumber {
+        width:8%;
+        min-width:50px;
+        text-align: center;
+    }
+    .app-Info{
+        width:100px;
+        margin-top: 20px;
+        float: left;
+    }
+    .app-back{
+        margin-top: 20px;
+        float: left;
+        margin-left: 20px;
+    }
+    .app-back a{
+        color: #fff;
+    }
+    #list{
+        width:100%;
+        float: left;
+    }
+    #tableNameTitle{
+        width: 100%;
+        height: 30px;
+        margin-bottom: 20px;
+        display: block;
+        font-size: 24px;
+    }
+</style>
+
+<div class='main-body'>
+    <div class="main">
+        <span id="tableNameTitle"></span>
+        <h4 style="margin-bottom: 20px;">逻辑表字段 <small>(拖动列表可以排列顺序)</small></h4>
+        <div id="list">
+            <ul class="sortable">
+                <li class="dragHead check"><input type="checkbox" onclick="allChecked()" id="allCheck"></li>
+                <li class="dragHead orderNumber">序号</li>
+                <li class="dragHead">字段名</li>
+                <li class="dragHead">字段类型</li>
+            </ul>
+            <ul id="sortable" class="ui-sortable col-sm-12 sortable"></ul>
+        </div>
+        <div class="btn btn-success app-Info" id="UpData" onclick="UpData()">上传</div>
+        <div class="btn btn-success app-back"><a href="/dbplus/logictable/query?matrixName=$!appName.appName" class="href">返回逻辑表查询</a></div>
+    </div>
+</div>
+<script>
+    var isAllTrue=true;
+    var id=window.location.href.split("?relation_id=")[1].split("&tableName=")[0];
+    var tableName=window.location.href.split("?relation_id=")[1].split("&tableName=")[1];
+    $("#tableNameTitle").text("逻辑表名："+tableName)
+    $.ajax({
+        url:'/dbplus/logictable/fields?relation_id='+id,
+        type:'GET',
+        dataType:'json',
+        success:function(data){
+            if(data.success){
+                $("#sortable").html("");
+                for(var i=0;i<eval(data.data.fileds).length;i++){
+                    var datas=eval(data.data.fileds)[i];
+                    $("<li class='ui-state-default ui-sortable-handle dragLi'>" +
+                            "<span class='check'><input type='checkbox' class='checkSon' onclick='checkson()'></span>" +
+                            "<span class='orderNumber'>"+datas.rank+"</span>" +
+                            "<span class='shardColumnName'>"+datas.name+"</span>" +
+                            "<span class='shardColumnType'>"+datas.type+"</span>" +
+                            "</li>").appendTo("#sortable");
+                    $("<li class='dragLi'>"+(i+1)+"</li>").appendTo("#Number");
+                    if(datas.display){
+                        $(".checkSon").eq(i).prop("checked",true);
+                    }else{
+                        $(".checkSon").eq(i).prop("checked",false);
+                        isAllTrue=false
+                    }
+                }
+                if(isAllTrue){
+                    $("#allCheck").prop("checked",true)
+                }else{
+                    $("#allCheck").prop("checked",false)
+                }
+            }
+        },
+        error:function(data){
+            layer.msg("数据获取失败", {
+                offset: 't'
+            });
+        }
+    });
+    //拖动插件
+    $( function() {
+        $( "#sortable" ).sortable();
+        $( "#sortable" ).disableSelection();
+    } );
+    //点击全选
+    function allChecked(){
+        var checkRel=true;
+        if($("#allCheck").is(":checked")){
+            $(".checkSon").prop("checked",true);
+        }else{
+            $(".checkSon").prop("checked",false);
+        }
+    }
+    //点击选中或取消选中
+    function checkson(){
+        var checkRel=true;
+        for(var i=0;i<$(".checkSon").length;i++){
+            if(!$(".checkSon").eq(i).is(":checked")){
+                checkRel=false;
+            }
+        }
+        if(!checkRel){
+            $("#allCheck").prop("checked",false)
+        }else{
+            $("#allCheck").prop("checked",true)
+        }
+    }
+    //上传
+    var isUpData=true;
+    function UpData(){
+        if(!isUpData){
+            return;
+        }
+        isUpData=false;
+        var arr=[];
+        for(var i=0;i<$(".checkSon").length;i++){
+            var li=$(".checkSon").eq(i).parents(".dragLi");
+            var num=li.find(".orderNumber").text();
+            var shardName=li.find(".shardColumnName").text();
+            var type=li.find(".shardColumnType").text();
+            var dataJson={
+                'rank':num,
+                'name':shardName,
+                'type':type
+            };
+            if($(".checkSon").eq(i).is(":checked")){
+                dataJson.display=true;
+            }else{
+                dataJson.display=false;
+            }
+            arr.push(dataJson);
+        };
+
+        $.ajax({
+            url:'/dbplus/logictable/rank_fields',
+            type:'POST',
+            dataType:'json',
+            data:{
+                json_data:JSON.stringify(arr),
+                relation_id:id
+            },
+            success:function(data){
+                if(data.success){
+                    layer.msg("上传成功", {
+                        offset: 't'
+                    });
+                }
+                isUpData=true;
+            },
+            error:function(data){
+                layer.msg("上传失败", {
+                    offset: 't'
+                });
+                isUpData=true;
+            }
+        });
+    }
+</script>

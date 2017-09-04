@@ -1,0 +1,4 @@
+#set($layout="common/layout_min.vm")
+<div class="row" style="text-align:center;font-size:40px;margin-top: 50px;margin-bottom: 50px;">
+	你还没有权限进行此操作！
+</div>

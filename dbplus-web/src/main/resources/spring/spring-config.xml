@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/tx
+    	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util-2.5.xsd"
+       default-autowire="byName">
+
+    <context:annotation-config/>
+    <context:component-scan base-package="com.pamirs.dbplus.web.controller"/>
+
+    <import resource="classpath:dubbo/dubbo.xml"/>
+
+    <!--<bean id="templateUtil" class="com.deppon.cubc.manager.tools.velocity.utils.TemplateUtil">-->
+        <!--<property name="rootPath" value="${system.vmcommon.rootPath}"></property>-->
+    <!--</bean>-->
+
+    <!-- 可通过注解控制事务 -->
+    <tx:annotation-driven />
+
+    <!-- Import basic SpringMVC Resteasy integration -->
+    <import resource="classpath:springmvc-resteasy.xml"/>
+
+    <!--core 核心模块-->
+    <import resource="classpath*:spring/db/persistence.xml"/>
+    <import resource="classpath:/spring/spring-configure-config.xml"/>
+    <import resource="classpath*:spring/spring-local-bean.xml"/>
+    <!--<import resource="classpath:/spring/spring-dubbo-remoting.xml"/>-->
+
+    <!-- login登录拦截器 -->
+    <bean id="loginFilter" class="com.pamirs.dbplus.web.filters.LoginFilter">
+        <property name="excludedUrls">
+            <list>
+                <value>/account/user/register</value>
+                <value>/account/user/login</value>
+            </list>
+        </property>
+        <property name="loginUrl"><value>/login</value></property>
+        <property name="userService"><bean class="com.pamirs.dbplus.core.service.account.UserServiceImpl"/></property>
+        <property name="DBPLUS_CODE"><ref bean="DBPLUS_CODE"/></property>
+    </bean>
+
+    <bean id="DBPLUS_CODE" class="java.lang.String">
+        <constructor-arg type="java.lang.String" value="1236435"/>
+    </bean>
+
+    <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+        <property name="resourceLoaderPath" value="/WEB-INF/vm"/>
+        <property name="configLocation" value="classpath:velocity.properties"/>
+        <property name="velocityProperties">
+            <props>
+                <prop key="input.encoding">UTF-8</prop><!-- 指定模板引擎进行模板处理的编码 -->
+                <prop key="output.encoding">UTF-8</prop><!-- 指定输出流的编码 -->
+                <prop key="contentType">text/html;charset=UTF-8</prop><!-- contentType -->
+            </props>
+        </property>
+    </bean>
+
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+        <property name="suffix" value=".vm"/>
+        <!-- 使用springMacro、使用servlet的对象 -->
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposeSessionAttributes" value="false"/>
+
+        <property name="contentType" value="text/html;charset=UTF-8" />
+
+        <property name="layoutUrl" value="common/layout.vm"></property>
+
+        <!-- spring的日期格式化 -->
+        <property name="dateToolAttribute" value="dateTool"/>
+
+        <property name="attributesMap">
+            <map>
+                <!--Velocity Tools-->
+                <entry key="view"><bean class="com.pamirs.dbplus.web.utils.ViewUtils"/></entry>
+                <entry key="dateUtil"><bean class="com.pamirs.dbplus.web.utils.DateUtil"/></entry>
+            </map>
+        </property>
+    </bean>
+
+    <!-- 对静态资源文件的访问 -->
+    <mvc:resources mapping="/assets/**" location="/assets/"/>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="transactionTemplate"
+          class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager"/>
+    </bean>
+
+</beans>

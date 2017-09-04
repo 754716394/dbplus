@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+                     http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                     http://www.springframework.org/schema/context
+                     http://www.springframework.org/schema/context/spring-context-2.5.xsd
+                     http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-autowire="byName">
+
+	<description>
+		存放Spring Dubbo相关配置
+	</description>
+ 	<import resource="dubbo-provider.xml"/>
+	<import resource="dubbo-consumer.xml"/>
+
+	<!--<dubbo:application name="${tools.dubbo.application.name}" owner="${tools.dubbo.application.owner}" />-->
+	<!--<dubbo:registry protocol="${tools.dubbo.registry.protocol}" address="${tools.dubbo.registry.address}"/>-->
+	<!--<dubbo:protocol name="${tools.dubbo.protocol.name}" port="${tools.dubbo.protocol.port}"/>-->
+	<!--<dubbo:consumer timeout="${tools.dubbo.consumer.timeout}" check="${tools.dubbo.consumer.check}"/>-->
+	<!--<dubbo:provider timeout="${tools.dubbo.provider.timeout}" delay="-1" retries="0"/>-->
+
+</beans>

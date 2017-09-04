@@ -1,0 +1,334 @@
+#set($layout="common/layout_blank.vm")
+
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/basic.js"></script>
+    <title>DBPLUS登录</title>
+</head>
+<style>
+    html,body{
+        height:100%;
+    }
+    *{
+        box-sizing: border-box;
+    }
+    .login-body{
+        width:100%;
+        height:100%;
+        background: #1a1f31;
+        position: relative;
+    }
+    .login-box{
+        width:480px;
+        height:460px;
+        position: absolute;
+        top:50%;
+        left:50%;
+        margin: -230px 0 0 -240px;
+    }
+    .logo{
+        width:100%;
+        height:90px;
+        line-height:90px;
+        text-align: center;
+    }
+    .logo h1{
+        margin: 0;
+        line-height:90px;
+        font-size: 40px;
+        color: #fff;
+    }
+    .login-input{
+        width:100%;
+        height:370px;
+        background: #fff;
+        border-radius: 4px;
+        padding: 50px 60px;
+    }
+    .input-box{
+        width:100%;
+        height:100%;
+    }
+    .input-box h4{
+        font-size: 18px;
+        text-align: center;
+        line-height: 30px;
+        margin: 0 0 10px 0;
+        color: #4abde2;
+    }
+    .isForm{
+        width:100%;
+        height:200px;
+        padding-top: 20px;
+        position: relative;
+    }
+    .inputTest{
+        width:100%;
+        height:40px;
+        position: relative;
+        margin-bottom:20px;
+    }
+    .inputTest:after{
+        content: '';
+        width:0;
+        height:0;
+        clear: both;
+    }
+    .Input{
+        width:100%;
+        height:40px;
+        border:1px solid #ddd;
+        margin: 0;
+        border-radius: 4px;
+        font-size: 12px;
+        padding: 0 10px 0 40px;
+        outline: none;
+    }
+    .Input:hover{
+        border-color: #4abde2;
+    }
+    .Input:focus{
+        border-color: #4abde2;
+    }
+    .loginIcon{
+        position: absolute;
+        top:0;
+        left:0;
+        display: block;
+        width:40px;
+        height:40px;
+        background-image: url("/assets/img/loginicon.png");
+        background-repeat: no-repeat;
+    }
+    .loginIcon1{
+        background-position: 10px 10px;
+    }
+    .loginIcon2{
+        background-position: 10px -20px;
+    }
+    .loginIcon3{
+        background-position: 10px -76px;
+    }
+    .LOGIN button{
+        outline:none;
+        box-shadow: none;
+    }
+    .LOGIN button:focus{
+        outline:none;
+        box-shadow: none;
+    }
+    .testSpan{
+        position: absolute;
+        display: block;
+        top:0;
+        left:0;
+        width:360px;
+        height:20px;
+        line-height:20px;
+        text-align: center;
+        color: red;
+        font-size: 12px;
+    }
+    .testCode{
+        width:170px;
+        float: left;
+        margin-right: 20px;
+    }
+    .testImg{
+        width:170px;
+        float: left;
+        display: block;
+        height:40px;
+        cursor: pointer;
+    }
+    .testImg img{
+        width:130px;
+        height:40px;
+        display: block;
+        float: left;
+    }
+    .imgLoad{
+        width:40px;
+        height:40px;
+        display: block;
+        float: left;
+        background: url("/assets/img/loadIcon.png") no-repeat;
+        background-size: cover;
+    }
+    #login_captcha_img{
+        display: inline-block;
+        width: 170px;
+        height: 30px;
+        margin-top: 5px;
+    }
+    #login_captcha_img a{
+        display: inline-block;
+        width: 100px;
+        height: 100%;
+    }
+    #login_captcha_img a img{
+        display: block;
+        width:100%;
+        height:100%;
+    }
+</style>
+<body>
+<div class="login-body">
+    <div class="login-box">
+        <div class="logo">
+            <h1>DBPLUS</h1>
+        </div>
+        <div class="login-input">
+            <div class="input-box">
+                <h4>用户登录</h4>
+                <div class="isForm">
+                    <form>
+                        <span class="testSpan"></span>
+                        <div class="inputTest">
+                            <input class="Input" id="login_name" type="text"  placeholder="请输入用户名">
+                            <span class="loginIcon loginIcon1"></span>
+                        </div>
+                        <div class="inputTest">
+                            <input class="Input" id="login_pwd" type="password" placeholder="请输入密码">
+                            <span class="loginIcon loginIcon2"></span>
+                        </div>
+
+                        <div class="inputTest" id="captcha_wrap" #if($login_error_times < 3)style="display:none;"#end>
+                            <input class="Input testCode" id="login_captcha" type="text"  placeholder="请输入验证码">
+                            <span class="loginIcon loginIcon3"></span>
+                            <span id="login_captcha_img">
+                                <a href="javascript:void(0);" class="change_captcha"><img src="/captcha?nocache=$view.random()" alt="验证码"/></a>
+                            </span>
+                        </div>
+                        <label class="checkbox" style="text-align: right;">
+                            <input id="login_rememberme" type="checkbox" value="remember-me">记住我
+                        </label>
+                    </form>
+                    <div class="LOGIN">
+                        <button class="btn btn-info col-sm-12" id="sub_login">登录</button>
+                    </div>
+
+                </div>
+
+                <!-- Alert -->
+                <div id="alert_pop" class="modal hide fade" aria-hidden="true">
+                    <p id="alert_text">提醒</p>
+                </div>
+
+                <!-- Warning -->
+                <div id="warning_pop" class="modal hide fade" aria-hidden="true">
+                    <p id="warning_text">警告</p>
+                </div>
+                <!-- pop -->
+                <div id="pop_here"></div>
+                <!-- redirect flag -->
+                <div id="is_not_redirect" data="false"></div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    $(".Input").focus(function(){
+        $(this).css({borderColor:"#4abde2"})
+    }).blur(function(){
+        $(this).css({borderColor:"#ddd"})
+    });
+
+
+
+    $(document).ready(function() {
+
+        // 绑定换一张验证码的事件
+        $('.change_captcha').on('click', function() {
+            loginOper.change_captcha();
+        });
+
+        // 提交按钮
+        $('#sub_login').on('click', function() {
+            loginOper.do_login();
+        });
+        document.onkeydown=function(event){
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if(e && e.keyCode==13){ // enter 键
+                loginOper.do_login();
+            }
+        };
+
+    });
+
+    var loginOper = {
+
+        /**
+         * 换一张验证码
+         */
+        change_captcha: function() {
+            data = '<img src="/captcha?nocache=' + Math.random() * 9999999 + '" alt="验证码"/>';
+            $('.change_captcha').html(data);
+            $('#login_captcha').attr('value','');
+        },
+
+        do_login : function(){
+
+            //提交表单
+            var login_name = $('#login_name').val();
+            var login_pwd = $('#login_pwd').val();
+            var login_captcha = $('#login_captcha').val();
+            var login_rememberme = $('#login_rememberme').is(':checked');
+            var next = $('#next').val();
+            var alarm;
+            if (login_name == null || login_name == '' || login_name == undefined) {
+                // 非空验证
+                alarm = '请填写用户名';
+                basicOper.error($('#login_error'), alarm);
+                $(".testSpan").text(alarm)
+                return false;
+            }
+
+            if (login_pwd == null || login_pwd == '' || login_pwd == undefined) {
+                // 非空验证
+                alarm = '请填写密码';
+                basicOper.error($('#login_error'), alarm);
+                $(".testSpan").text(alarm)
+                return false;
+            }
+            $.ajax({
+                type : "post",
+                url : "/account/user/login",
+                data : {
+                    name:login_name,
+                    password:login_pwd,
+                    captcha:login_captcha,
+                    rememberme:login_rememberme,
+                    next:next
+                },
+                async : true,
+                dataType : 'json',
+                success : function(data){
+                    console.log("data" + data.error_times);
+                    if(data.is_success){
+                        window.location.href = "/dbplus/logictable/list";
+                    }else{
+                        $(".testSpan").text(data.msg)
+                        if(data.error_times > 2){
+                            $('#captcha_wrap').show();
+                            loginOper.change_captcha();
+                        }
+                        basicOper.error($('#login_error'), data.msg);
+                    }
+                }
+            });
+            $("#login_captcha").val("")
+        }
+
+
+    };
+</script>
+</html>

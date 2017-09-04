@@ -1,0 +1,84 @@
+#set($layout="common/layout_min.vm")
+<div class="modal hide fade modal-large" id="modifyModal">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>#if($op == 'audit')审核 #else 修改 #end 用户资料</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal form-signin" style="border:0;" id="modify_user" action="/account/user/add/do/" method="POST">
+            <fieldset>
+				<input type="hidden" id="id" name="id" value="$!user.id"/>
+				
+
+                <div class="control-group" id="nick_control">
+                    <label class="control-label" for="nick">昵称</label>
+                    <div class="controls controls-row">
+                        <input type="text" class="input-xlarge" id="nick" name="nick" value="$!user.nick"/>
+						<span class="help-inline">
+                            昵称由4～20个中文字符、数字、大小写字母、中杠、下划线组成。不能以数字、下划线开头。
+                        </span>
+                    </div>
+                </div>
+                <div class="control-group" id="name_control">
+                    <label class="control-label" for="name">用户名</label>
+                    <div class="controls controls-row">
+                        <input type="text" class="input-xlarge" id="name" name="name" required placeholder="*必填" value="$!user.name"/>
+                        <span class="help-inline">
+                            用户名由4～20个中文字符、数字、大小写字母、中杠、下划线组成。不能以数字、下划线开头。
+                        </span>
+                    </div>
+                </div>
+				<div class="control-group" id="oldpassword_control">
+                    <label class="control-label" for="oldpassword">原密码</label>
+                    <div class="controls controls-row">
+                        <input type="password" class="input-xlarge" id="oldpassword" name="oldpassword"  value=""/>
+						<span class="help-inline">
+                            如果不需要修改密码，可以不填。
+                        </span>
+                    </div>
+                </div>
+				<div class="control-group" id="newpassword_control">
+                    <label class="control-label" for="newpassword">新密码</label>
+                    <div class="controls controls-row">
+                        <input type="password" class="input-xlarge" id="newpassword" name="newpassword"  value=""/>
+						<span class="help-inline">
+                            密码长度必须大于6。
+                        </span>
+                    </div>
+                </div>
+				<div class="control-group" id="confirm_newpassword_control">
+                    <label class="control-label" for="confirm_newpassword">确认新密码</label>
+                    <div class="controls controls-row">
+                        <input type="password" class="input-xlarge" id="confirm_newpassword" name="confirm_newpassword"  value=""/>
+						<span class="help-inline">
+                            密码长度必须大于6。
+                        </span>
+                    </div>
+                </div>
+				<div class="control-group" id="email_control">
+                    <label class="control-label" for="email">邮箱</label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" id="email" name="email" required placeholder="*必填" value="$!user.email"/>
+                        <span class="help-inline">
+                            请填写正确的邮箱，以便找回密码
+                        </span>
+                    </div>
+                </div>
+
+                <div style="margin-left: 180px;">
+                    <button id="sub_modify_user" type="submit" class="btn btn-primary">#if($op == 'audit')审核#else修改#end</button>   
+					<a class="btn" href="#" onclick="$('#modifyModal').modal('hide');">取消</a>
+                </div>
+            </fieldset>
+        </form>
+		
+    	<div id="form_error" class="alert alert-error" #if("$!is_success" == "false")style="display:block;"#end>
+    		<a name="form_error"></a>
+    		<span>$!msg</span>
+        </div>
+	</div>
+</div>
+
+<script src="/assets/js/form.js"></script>
+<script src="/assets/js/account/user.js"></script>
+

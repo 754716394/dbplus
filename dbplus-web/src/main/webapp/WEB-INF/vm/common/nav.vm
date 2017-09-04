@@ -1,0 +1,28 @@
+
+  <!-- Navbar
+    ================================================== -->
+  <div class="left-nav">
+      <div class="logo"><a href="#appTable" class="href">DBPLUS</a></div>
+      <ul class="lists">
+          <li class="list">
+              <span class="list-href active">PDDL管理</span>
+              <ul class="small-lists">
+                  <li class="small-list"><a href="/dbplus/logictable/list" class="href">PDDL配置管理</a></li>
+                  <li class="small-list"><a href="/dbplus/logictable/query" class="href">逻辑表查询</a></li>
+              </ul>
+          </li>
+          <!--<li class="list">
+              <span class="list-href">JADE管理</span>
+              <ul class="small-lists">
+                  <li class="small-list"><a href="#Inquiryresult" class="href">small-list1</a></li>
+                  <li class="small-list"><a href="#small-list42" class="href">small-list2</a></li>
+                  <li class="small-list"><a href="#small-list43" class="href">small-list3</a></li>
+                  <li class="small-list"><a href="#small-list44" class="href">small-list4</a></li>
+                  <li class="small-list"><a href="#small-list45" class="href">small-list5</a></li>
+              </ul>
+          </li>-->
+      </ul>
+  </div>
+  <script>
+      $(".list").addClass("active open")
+  </script>

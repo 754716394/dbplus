@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans default-autowire="byName">
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName">
+            <value>com.mysql.jdbc.Driver</value>
+        </property>
+        <property name="url">
+            <value>jdbc:mysql://114.55.42.181:3306/dbplus_local?useUnicode=true&amp;characterEncoding=UTF-8</value>
+        </property>
+        <property name="username">
+            <value>admin</value>
+        </property>
+        <property name="password">
+            <value>athene.admin</value>
+        </property>
+        <property name="maxActive" value="10"></property>
+        <property name="maxIdle" value="5"></property>
+        <property name="maxWait" value="500"></property>
+        <property name="validationQuery" value="select 1" />
+        <property name="validationQueryTimeout" value="1200" />
+        <property name="testOnBorrow" value="true" />
+        <property name="testWhileIdle" value="true" />
+    </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource">
+            <ref local="dataSource"/>
+        </property>
+    </bean>
+
+    <!--<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+        <!--<property name="mapperLocations" value="classpath*:spring/sqlmap/*Mapper.xml"/>-->
+    <!--</bean>-->
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:spring/db/mybatis-config.xml"></property>
+    </bean>
+
+    <!--<bean id="dataSourceBase" class="com.pamirs.pddl.client.jdbc.TDataSource" init-method="init">-->
+        <!--<property name="appName" value="CUBC-TRADE-BASE"/>-->
+        <!--<property name="dynamicRule" value="true"/>-->
+    <!--</bean>-->
+
+    <!---->
+   
+</beans>

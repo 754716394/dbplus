@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pamirs.dbplus.core.dao.LogicTableFiledsDAO" >
+    <resultMap id="BaseResultMap" type="com.pamirs.dbplus.api.model.LogicTableFiledsDO" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="relation_id" property="relationId" jdbcType="BIGINT" />
+        <result column="matrix_name" property="matrixName" jdbcType="VARCHAR" />
+        <result column="table_name" property="tableName" jdbcType="VARCHAR" />
+        <result column="shard_tb_num" property="shardTbNum" jdbcType="INTEGER" />
+        <result column="db_name" property="dbName" jdbcType="VARCHAR" />
+        <result column="shard_db_num" property="shardDbNum" jdbcType="INTEGER" />
+        <result column="fileds" property="fileds" jdbcType="VARCHAR" />
+        <result column="display_fileds" property="displayFileds" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modify" property="gmtModify" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, relation_id, matrix_name, table_name, shard_tb_num, db_name, shard_db_num, fileds, display_fileds, gmt_create, gmt_modify
+    </sql>
+
+    <select id="selectOne" resultMap="BaseResultMap" parameterType="com.pamirs.dbplus.api.model.LogicTableFiledsDO" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_fileds
+        <include refid="Data_Where_Clause" /> limit 1
+    </select>
+
+    <select id="selectOneById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_fileds
+        where id = #{id,jdbcType=BIGINT} and is_deleted != 1
+    </select>
+
+    <select id="selectOneByRelationId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_fileds
+        where relation_id = #{relationId,jdbcType=BIGINT} and is_deleted != 1
+    </select>
+
+    <select id="selectListByMatrixName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_fileds
+        where matrix_name = #{matrixName,jdbcType=VARCHAR} and is_deleted != 1
+    </select>
+
+    <select id="selectOneByTableName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_fileds
+        where table_name = #{tableName,jdbcType=VARCHAR} and is_deleted != 1 limit 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap" parameterType="com.pamirs.dbplus.api.query.LogicTableFiledsQuery" >
+        select
+        <include refid="Base_Column_List" />
+        from logic_table_fileds
+        <include refid="Data_Where_Clause" />
+        <include refid="Data_Where_Plus" />
+    </select>
+
+    <select id="selectListCount" resultType="java.lang.Long" parameterType="com.pamirs.dbplus.api.query.LogicTableFiledsQuery" >
+        select count(*) from logic_table_fileds
+        <include refid="Data_Where_Clause" />
+    </select>
+
+    <update id="delete" parameterType="java.lang.Long" >
+        update logic_table_fileds set is_deleted = 1
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <insert id="insert" parameterType="com.pamirs.dbplus.api.model.LogicTableFiledsDO" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="Long"  order="AFTER" keyProperty="id" >
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into logic_table_fileds
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="relationId != null" >
+                relation_id,
+            </if>
+            <if test="matrixName != null" >
+                matrix_name,
+            </if>
+            <if test="tableName != null" >
+                table_name,
+            </if>
+            <if test="shardTbNum != null" >
+                shard_tb_num,
+            </if>
+            <if test="dbName != null" >
+                db_name,
+            </if>
+            <if test="shardDbNum != null" >
+                shard_db_num,
+            </if>
+            <if test="fileds != null" >
+                fileds,
+            </if>
+            <if test="displayFileds != null" >
+                display_fileds,
+            </if>
+            <if test="gmtCreate != null" >
+                gmt_create,
+            </if>
+            <if test="gmtModify != null" >
+                gmt_modify,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="relationId != null" >
+                #{relationId,jdbcType=BIGINT},
+            </if>
+            <if test="matrixName != null" >
+                #{matrixName,jdbcType=VARCHAR},
+            </if>
+            <if test="tableName != null" >
+                #{tableName,jdbcType=VARCHAR},
+            </if>
+            <if test="shardTbNum != null" >
+                #{shardTbNum,jdbcType=INTEGER},
+            </if>
+            <if test="dbName != null" >
+                #{dbName,jdbcType=VARCHAR},
+            </if>
+            <if test="shardDbNum != null" >
+                #{shardDbNum,jdbcType=INTEGER},
+            </if>
+            <if test="fileds != null" >
+                #{fileds,jdbcType=VARCHAR},
+            </if>
+            <if test="displayFileds != null" >
+                #{displayFileds,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null" >
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModify != null" >
+                #{gmtModify,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.pamirs.dbplus.api.model.LogicTableFiledsDO" >
+        update logic_table_fileds
+        <set >
+            <if test="id != null" >
+                id = #{id,jdbcType=BIGINT},
+            </if>
+            <if test="relationId != null" >
+                relation_id = #{relationId,jdbcType=BIGINT},
+            </if>
+            <if test="matrixName != null" >
+                matrix_name = #{matrixName,jdbcType=VARCHAR},
+            </if>
+            <if test="tableName != null" >
+                table_name = #{tableName,jdbcType=VARCHAR},
+            </if>
+            <if test="shardTbNum != null" >
+                shard_tb_num = #{shardTbNum,jdbcType=INTEGER},
+            </if>
+            <if test="dbName != null" >
+                db_name = #{dbName,jdbcType=VARCHAR},
+            </if>
+            <if test="shardDbNum != null" >
+                shard_db_num = #{shardDbNum,jdbcType=INTEGER},
+            </if>
+            <if test="fileds != null" >
+                fileds = #{fileds,jdbcType=VARCHAR},
+            </if>
+            <if test="displayFileds != null" >
+                display_fileds = #{displayFileds,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null" >
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModify != null" >
+                gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="Data_Where_Clause" >
+        where is_deleted != 1
+        <if test="id != null" >
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="relationId != null" >
+            and relation_id = #{relationId,jdbcType=BIGINT}
+        </if>
+        <if test="matrixName != null" >
+            and matrix_name = #{matrixName,jdbcType=VARCHAR}
+        </if>
+        <if test="tableName != null" >
+            and table_name = #{tableName,jdbcType=VARCHAR}
+        </if>
+        <if test="shardTbNum != null" >
+            and shard_tb_num = #{shardTbNum,jdbcType=INTEGER}
+        </if>
+        <if test="dbName != null" >
+            and db_name = #{dbName,jdbcType=VARCHAR}
+        </if>
+        <if test="shardDbNum != null" >
+            and shard_db_num = #{shardDbNum,jdbcType=INTEGER}
+        </if>
+        <if test="fileds != null" >
+            and fileds = #{fileds,jdbcType=VARCHAR}
+        </if>
+        <if test="displayFileds != null" >
+            and display_fileds = #{displayFileds,jdbcType=VARCHAR}
+        </if>
+        <if test="gmtCreate != null" >
+            and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="gmtModify != null" >
+            and gmt_modify = #{gmtModify,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    <sql id="Data_Where_Plus">
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+        <if test="pageSize != null and start != null">
+            limit #{start}, #{pageSize}
+        </if>
+        <if test="pageSize != null and start == null">
+            limit #{pageSize}
+        </if>
+    </sql>
+
+</mapper>

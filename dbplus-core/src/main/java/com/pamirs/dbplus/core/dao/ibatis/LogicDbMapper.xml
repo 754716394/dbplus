@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pamirs.dbplus.core.dao.LogicDbDAO" >
+    
+    <resultMap id="BaseResultMap" type="com.pamirs.dbplus.api.model.LogicDbDO" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="matrix_name" property="matrixName" jdbcType="VARCHAR" />
+        <result column="db_url" property="dbUrl" jdbcType="VARCHAR" />
+        <result column="db_name" property="dbName" jdbcType="VARCHAR" />
+        <result column="gmt_create" property="gmtCreate" jdbcType="TIMESTAMP" />
+        <result column="gmt_modify" property="gmtModify" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id, matrix_name, db_url, db_name, gmt_create, gmt_modify
+    </sql>
+
+    <select id="selectOneById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+        select
+        <include refid="Base_Column_List" />
+        from db_list
+        where id = #{id,jdbcType=BIGINT} and is_deleted != 1
+    </select>
+
+    <select id="selectOneByMatrixName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from db_list
+        where matrix_name = #{matrixName,jdbcType=VARCHAR} and is_deleted != 1
+    </select>
+
+    <select id="selectOneByDbName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from db_list
+        where db_name = #{dbName,jdbcType=VARCHAR} and is_deleted != 1
+    </select>
+
+    <select id="selectList" resultMap="BaseResultMap" parameterType="com.pamirs.dbplus.api.query.LogicDbQuery" >
+        select
+        <include refid="Base_Column_List" />
+        from db_list
+        <include refid="Data_Where_Clause" />
+        <include refid="Data_Where_Plus" />
+    </select>
+
+    <select id="selectListCount" resultType="java.lang.Long" parameterType="com.pamirs.dbplus.api.query.LogicDbQuery" >
+        select count(*) from db_list
+        <include refid="Data_Where_Clause" />
+    </select>
+
+    <select id="selectListByCodes" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from db_list
+        where is_deleted != 1 and event_code in
+        <foreach collection="list" item="code" index="index"
+                 open="(" close=")" separator=",">
+            #{code}
+        </foreach>
+    </select>
+
+    <update id="delete" parameterType="java.lang.Long" >
+        update db_list set is_deleted = 1
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <insert id="insert" parameterType="com.pamirs.dbplus.api.model.LogicDbDO" useGeneratedKeys="true" keyProperty="id">
+        <selectKey resultType="Long"  order="AFTER" keyProperty="id" >
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into db_list
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="matrixName != null" >
+                matrix_name,
+            </if>
+            <if test="dbUrl != null" >
+                db_url,
+            </if>
+            <if test="dbName != null" >
+                db_name,
+            </if>
+            <if test="gmtCreate != null" >
+                gmt_create,
+            </if>
+            <if test="gmtModify != null" >
+                gmt_modify,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="matrixName != null" >
+                #{matrixName,jdbcType=VARCHAR},
+            </if>
+            <if test="dbUrl != null" >
+                #{dbUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="dbName != null" >
+                #{dbName,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null" >
+                #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModify != null" >
+                #{gmtModify,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.pamirs.dbplus.api.model.LogicDbDO" >
+        update db_list
+        <set >
+            <if test="id != null" >
+                id = #{id,jdbcType=BIGINT},
+            </if>
+            <if test="matrixName != null" >
+                matrix_name = #{matrixName,jdbcType=VARCHAR},
+            </if>
+            <if test="dbUrl != null" >
+                db_url = #{dbUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="dbName != null" >
+                db_name = #{dbName,jdbcType=VARCHAR},
+            </if>
+            <if test="gmtCreate != null" >
+                gmt_create = #{gmtCreate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="gmtModify != null" >
+                gmt_modify = #{gmtModify,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="Data_Where_Clause" >
+        where is_deleted != 1
+        <if test="id != null" >
+            and id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="matrixName != null" >
+            and matrix_name = #{matrixName,jdbcType=VARCHAR}
+        </if>
+        <if test="dbUrl != null" >
+            and db_url = #{dbUrl,jdbcType=VARCHAR}
+        </if>
+        <if test="dbName != null" >
+            and db_name = #{dbName,jdbcType=VARCHAR}
+        </if>
+        <if test="gmtCreate != null" >
+            and gmt_create = #{gmtCreate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="gmtModify != null" >
+            and gmt_modify = #{gmtModify,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    <sql id="Data_Where_Plus">
+        <if test="orderBy != null">
+            order by ${orderBy}
+        </if>
+        <if test="pageSize != null and start != null">
+            limit #{start}, #{pageSize}
+        </if>
+        <if test="pageSize != null and start == null">
+            limit #{pageSize}
+        </if>
+    </sql>
+
+</mapper>

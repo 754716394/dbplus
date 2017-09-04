@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d %level [%thread] [%file:%line] - %msg %n</Pattern>
+        </layout>
+    </appender>
+
+    <appender name="STDERR" class="ch.qos.logback.core.ConsoleAppender">
+        <target>System.err</target>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d %level [%thread] [%file:%line] - %msg %n</Pattern>
+        </layout>
+    </appender>
+
+    <appender name="R" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>logs/manager-tools.log</File>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d %level [%thread] [%file:%line] - %msg %n</Pattern>
+        </layout>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>logs/manager-tools.log.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <logger name="com.pamirs" level="INFO">
+        <appender-ref ref="R"/>
+    </logger>
+    <logger name="com.pamirs.dbplus.web.controller" level="ERROR">
+        <appender-ref ref="R"/>
+    </logger>
+    <!--<logger name="com.deppon.cubc.manager.tools" level="ERROR">-->
+        <!--<appender-ref ref="R"/>-->
+    <!--</logger>-->
+    <logger name="org.springframework" level="INFO">
+        <appender-ref ref="R"/>
+    </logger>
+    <logger name="org.apache.ibatis" level="INFO">
+        <appender-ref ref="R"/>
+    </logger>
+    <logger name="java.sql" level="INFO">
+        <appender-ref ref="R"/>
+    </logger>
+    <logger name="com.pamirs.dbplus.web">
+        <level value="ERROR" />
+    </logger>
+
+    <logger name="org.apache.velocity" level="ERROR"/>
+    <logger name="net.sf.ehcache" level="WARN"/>
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="R"/>
+    </root>
+
+</configuration>

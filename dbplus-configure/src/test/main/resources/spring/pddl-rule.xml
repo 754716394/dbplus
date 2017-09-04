@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+    <bean id="vtabroot" class="com.pamirs.pddl.interact.rule.VirtualTableRoot" init-method="init">
+        <property name="dbType" value="MYSQL" />
+        <property name="defaultDbIndex" value="TADA-MALL-GROUP" />
+        <property name="tableRules">
+            <map>
+                <entry key="my_favor_entity" value-ref="my_favor_entity" />
+                <entry key="my_footprint_entity" value-ref="my_footprint_entity" />
+                <entry key="tc_biz_order_buyer_entity" value-ref="tc_biz_order_buyer_entity" />
+                <entry key="tc_order_buyer_relation_entity" value-ref="tc_order_buyer_relation_entity" />
+                <entry key="tc_orderitem_snapshot_entity" value-ref="tc_orderitem_snapshot_entity" />
+                <entry key="tc_pay_order_entity" value-ref="tc_pay_order_entity" />
+            </map>
+        </property>
+    </bean>
+    <bean id="my_favor_entity" class="com.pamirs.pddl.interact.rule.TableRule">
+        <property name="dbNamePattern" value="TADA-MALL-GROUP" />
+        <property name="tbNamePattern" value="my_favor_entity_{0000}" />
+        <property name="tbRuleArray">
+            <value>Math.abs(#shop_user_id,1,64#.longValue() % 64)</value>
+        </property>
+        <property name="allowFullTableScan" value="false" />
+    </bean>
+    <bean id="my_footprint_entity" class="com.pamirs.pddl.interact.rule.TableRule">
+        <property name="dbNamePattern" value="TADA-MALL-GROUP" />
+        <property name="tbNamePattern" value="my_footprint_entity_{0000}" />
+        <property name="tbRuleArray">
+            <value>Math.abs(#shop_user_id,1,256#.longValue() % 256)</value>
+        </property>
+        <property name="allowFullTableScan" value="false" />
+    </bean>
+    <bean id="tc_biz_order_buyer_entity" class="com.pamirs.pddl.interact.rule.TableRule">
+        <property name="dbNamePattern" value="TADA-MALL-GROUP" />
+        <property name="tbNamePattern" value="tc_biz_order_buyer_entity_{0000}" />
+        <property name="tbRuleArray">
+            <list>
+                <value>Math.abs(#city_code,1,256#.longValue() % 256)</value>
+                <value>Math.abs(#biz_order_id,1,256#.longValue() % 256)</value>
+            </list>
+        </property>
+        <property name="allowFullTableScan" value="false" />
+    </bean>
+    <bean id="tc_order_buyer_relation_entity" class="com.pamirs.pddl.interact.rule.TableRule">
+        <property name="dbNamePattern" value="TADA-MALL-GROUP" />
+        <property name="tbNamePattern" value="tc_order_buyer_relation_entity_{0000}" />
+        <property name="tbRuleArray">
+            <value>Math.abs(#city_code,1,256#.longValue() % 256)</value>
+        </property>
+        <property name="allowFullTableScan" value="false" />
+    </bean>
+    <bean id="tc_orderitem_snapshot_entity" class="com.pamirs.pddl.interact.rule.TableRule">
+        <property name="dbNamePattern" value="TADA-MALL-GROUP" />
+        <property name="tbNamePattern" value="tc_orderitem_snapshot_entity_{0000}" />
+        <property name="tbRuleArray">
+            <value>Math.abs(#city_code,1,256#.longValue() % 256)</value>
+        </property>
+        <property name="allowFullTableScan" value="false" />
+    </bean>
+    <bean id="tc_pay_order_entity" class="com.pamirs.pddl.interact.rule.TableRule">
+        <property name="dbNamePattern" value="TADA-MALL-GROUP" />
+        <property name="tbNamePattern" value="tc_pay_order_entity_{0000}" />
+        <property name="tbRuleArray">
+            <value>Math.abs(#city_code,1,256#.longValue() % 256)</value>
+        </property>
+        <property name="allowFullTableScan" value="false" />
+    </bean>
+</beans>

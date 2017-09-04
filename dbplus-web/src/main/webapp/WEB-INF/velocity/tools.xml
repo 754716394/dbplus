@@ -1,0 +1,29 @@
+<tools>  
+   <!--  <data type="boolean" key="xhtml" value="true"/>  
+    <data type="boolean" key="isSimple" value="true"/>  
+    <data type="number" key="version" value="2.0"/>  
+    <data key="foo">this is foo</data>  
+    <data key="bar">this is bar.</data>   -->
+      
+    <toolbox scope="request">  
+        <!-- <tool key="toytool" class="ToyTool" restrictTo="index*"/> -->  
+    </toolbox>  
+      
+    <toolbox scope="session">  
+        <!-- <tool key="map" class="java.utils.HashMap"/> -->
+    </toolbox>
+
+    <toolbox scope="application">
+        <tool key="configUtil" class="com.deppon.cubc.manager.tools.velocity.utils.ConfigUtil"/>
+        <tool Key="templateUtil" class="com.deppon.cubc.manager.tools.velocity.utils.TemplateUtil"/>
+        <tool Key="dateUtil" class="com.deppon.cubc.manager.tools.velocity.utils.DateUtil"/>
+        <!--<tool key="map" class="java.utils.HashMap"/>-->
+        <!--<tool key="dateUtil" class="com.wbm.carriage.crm.velocity.utils.DateUtil"/>  -->
+        <!--<tool key="beanUtil" class="com.wbm.carriage.crm.velocity.utils.BeanUtil"/>-->
+        <!--<tool key="urlConstants" class="com.wbm.carriage.crm.constant.UrlConstants"/>-->
+        <!--<tool key="numberUtil" class="com.wbm.carriage.crm.velocity.utils.NumberUtil"/>-->
+        <!--<tool key="specUtil" class="com.wbm.carriage.crm.velocity.utils.SpecUtil"/>-->
+        <!--<tool key="mapUtil" class="com.wbm.carriage.crm.velocity.utils.MapUtil"/>-->
+        <!--<tool key="storageUtil" class="com.wbm.carriage.crm.velocity.utils.StorageUtil"/>-->
+    </toolbox>
+</tools>

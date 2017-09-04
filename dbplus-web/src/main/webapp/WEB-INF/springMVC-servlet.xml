@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+
+	   default-autowire="byName">
+	<context:annotation-config/>
+	<context:component-scan base-package="com.pamirs.dbplus.web.controller"/>
+
+	<bean id="httpRequestHandlerAdapter" class="org.springframework.web.servlet.mvc.HttpRequestHandlerAdapter"/>
+
+	<!-- <bean id="publicUrlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="mappings">
+			<value>
+				/message/sub=topCometHandler
+			</value>
+		</property>
+		<property name="alwaysUseFullPath">
+			<value>true<value>
+		</property>
+	</bean> -->
+
+	<import resource="classpath:/springmvc-resteasy.xml"/>
+
+	<bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">
+		<property name="resourceLoaderPath" value="/views/"/>
+		<property name="velocityProperties">
+			<props>
+				<prop key="input.encoding">UTF-8</prop>
+				<prop key="output.encoding">UTF-8</prop>
+<!-- 				<prop key="layout.directory">/views/layouts/</prop>
+				<prop key="layout.default.template">layout.vm</prop>
+ -->			</props>
+		</property>
+	</bean>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityLayoutViewResolver">
+		<property name="contentType" value="text/html;charset=UTF-8"/>
+		<property name="suffix">
+			<value>.vm</value>
+		</property>
+		<property name="exposeRequestAttributes" value="true" />
+		<property name="toolboxConfigLocation" value="/WEB-INF/velocity/tools.xml" />
+		<property name="viewClass" value="com.pamirs.dbplus.web.velocity.VelocityToolbox20LayoutView"/>
+		<property name="layoutUrl" value="layouts/layout.vm" />
+	</bean>
+
+	<!--
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">
+		<property name="contentType" value="text/html;charset=UTF-8"/>
+		<property name="suffix">
+			<value>.vm</value>
+		</property>
+	</bean> -->
+
+</beans>

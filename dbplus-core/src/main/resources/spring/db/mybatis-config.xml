@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <mappers>
+        <!-- mapper -->
+        <mapper resource="com/pamirs/dbplus/core/dao/ibatis/UserDOMapper.xml"/>
+        <mapper resource="com/pamirs/dbplus/core/dao/ibatis/LogicTableMapper.xml"/>
+        <mapper resource="com/pamirs/dbplus/core/dao/ibatis/LogicDbMapper.xml"/>
+        <mapper resource="com/pamirs/dbplus/core/dao/ibatis/LogicTableFiledsMapper.xml"/>
+
+    </mappers>
+</configuration>

@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <title>DBPLUS</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/laypage.css">
+    <link rel="stylesheet" href="/assets/css/jquery-ui.css">
+    <link rel="stylesheet" href="/assets/css/reset.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="/assets/js/jquery.min.js"></script>
+    <script src="/assets/js/layer/layer.js"></script>
+    <script src="/assets/js/laypage.js"></script>
+    <script src="/assets/js/jquery-ui.js"></script>
+    <script src="/assets/js/ajax.js"></script>
+</head>
+
+<body style="min-width:1000px">
+<div class="body-main">
+	#parse("/common/nav.vm")
+
+    <div class="container">
+        <div class="top-content">
+            <span class="left-btn l-nav">≡</span>
+            <ul class="userLists">
+                <li class="userList">
+                    <span class="list-title">user</span>
+                    <div>
+                        <ul>
+                            <li><a href="#">personal-center</a></li>
+                            <li style="border:none;"><a href="/logout">loginout</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="userList">
+                    <span class="list-title">contact</span>
+                    <div>
+                        <ul>
+                            <li><a href="#">email</a></li>
+                            <li><a href="#">upload</a></li>
+                            <li style="border:none;"><a href="#">download</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        $screen_content
+        #parse("/common/footer.vm")
+	</div>
+</div>
+</body>
+
+
+<script>
+    $(function(){
+        for(var i=0;i<$(".userList").length;i++){
+            var lenh=$(".userList").eq(i).find("li").length*30+10;
+            $(".userLists .userList").eq(i).find("div").css({height:lenh})
+        }
+        $(".middle-content").css({height:($(".right-content").height()-90)});
+        $(".list").click(function(){
+            $(".list").removeClass("active");
+            $(this).addClass("active");
+            for(var i=0;i<$(".list").length;i++){
+                if(!$(".list").eq(i).hasClass("active")){
+                    $(".list").eq(i).removeClass("open");
+                    $(".list").eq(i).find("a").css({color:"#fff"})
+                }
+            }
+            $(".active").toggleClass("open");
+            listStyle();
+        });
+        $(".small-list").click(function(e){
+            if (e && e.stopPropagation) {
+                e.stopPropagation();
+            }
+            else {
+                window.event.cancelBubble = true;
+            }
+            $(".small-list").find("a").css({color:"#fff"});
+            $(this).find("a").css({color:"#4abde2"})
+        });
+        $(".left-btn").click(function(){
+            $(this).toggleClass("l-nav");
+            if($(this).hasClass("l-nav")){
+                $(".small-nav").css({opacity:0});
+                $(".body-main").delay(100).animate({marginLeft:200},500);
+            }else {
+                $(".list").removeClass("open");
+                $(".body-main").animate({marginLeft: 0}, 500);
+                $(".small-nav").delay(500).animate({opacity: 1}, 200);
+                for (var i = 0; i < $(".list").length; i++) {
+                    if ($(".list").eq(i).hasClass("active")) {
+                        $(".small-nav li").removeClass("small-active").eq(i + 1).addClass("small-active")
+                    }
+                }
+            }
+        })
+        $(".userList").hover(function(){
+            $(".userList div").css({top:"60px",display:"none",opacity:0});
+            $(this).find("div").css({display:"block"}).animate({opacity:1,top:"50px"},300)
+        },function(){
+            $(this).find("div").css({top:"60px",display:"none",opacity:0})
+        })
+        $(".main-body").css({height:($("body").height()-90)});
+    })
+
+    function listStyle(){
+        $(".list .small-lists").css({height:0});
+        var len=$(".active .small-list").length*40;
+        $(".open .small-lists").css({height:len});
+    }
+
+    function loadHtml(obj){
+        var href=$(obj).attr("href").split("#");
+        var url=href[1];
+        listLoadStyle(url)
+    };
+    window.onload=function(){
+        OnLoad()
+    };
+    function OnLoad(){
+        var ifUrl=window.location.href.split("/dbplus/logictable/")[1];
+        var lUrl,ifName;
+        if(ifUrl==""){
+            lUrl='list'
+        }else if(ifUrl==undefined){
+            lUrl='/dbplus/logictable/list'
+        }else{
+            lUrl=ifUrl;
+            ifName=lUrl.split("?")[1]?lUrl.split("?")[0]:lUrl
+        }
+        listLoadStyle(ifName);
+    }
+
+    function listLoadStyle(lUrl){
+        for(var i=0;i<$(".list").length;i++){
+            for(var j=0;j<$(".list").eq(i).find("a").length;j++){
+                if($(".list").eq(i).find("a").eq(j).attr("href").split("/dbplus/logictable/")[1]==lUrl){
+                    $(".list").eq(i).find("a").css({color:"#fff"}).eq(j).css({color:"#4abde2"});
+                    $(".list").removeClass("active open").eq(i).addClass("active open");
+                    listStyle();
+                }
+            }
+        }
+    }
+</script>
+</html>

@@ -1,0 +1,185 @@
+<style>
+    .group{
+        padding: 0;
+        width: 300px;
+        height: auto;
+        overflow: hidden;
+        float: left;
+    }
+    .group #app-name{
+        display: inline-block;
+        padding: 0;
+        line-height:35px;
+    }
+    .input-label{
+        line-height: 30px;
+    }
+    button{
+        outline: none!important;
+    }
+    .title{
+        padding: 20px 0;
+        float: left;
+        width: 100%;
+    }
+    .table td{
+        vertical-align: middle!important;
+    }
+    .area{
+        height: 300px;
+        border-radius: 4px;
+        border:1px solid #ddd;
+    }
+    .newLook .group{
+        height:auto;
+        padding:0;
+    }
+    .newLook .group:after{
+        content: '';
+        width:0;
+        height:0;
+        clear: both;
+        display: block;
+    }
+    .newLook label.input-label{
+        text-align: right;
+        line-height:35px;
+        margin-bottom: 0;
+    }
+    .newLook .page{
+        margin-top: 20px;
+    }
+    .newLook .inquiryResult{
+        width:100%;
+        height:100%;
+        padding:20px;
+    }
+    .newLook .table-model{
+        width:100%;
+        height:auto;
+        overflow: auto;
+        margin-top: 20px;
+        float: left;
+    }
+    .newLook .table{
+        width: auto;
+        min-width: 100%;
+        max-width: none;
+        overflow: auto;
+    }
+</style>
+
+<div class='main-body'>
+    <div class="main">
+        <form action="/dbplus/logictable/query"  class="col-sm-12">
+            <div class="group">
+                <label class="col-sm-4 input-label">appName:</label>
+                <div class="col-sm-8">
+                    <input type="text" name='matrixName' id="appName" placeholder="appName" class="form-control" value="">
+                </div>
+            </div>
+            <div class="group" style="width:350px">
+                <label for="logicList" class="col-sm-4 input-label">逻辑表查询:</label>
+                <div class="col-sm-8">
+                    <input type="text" name="tableName" id="logicList" placeholder="逻辑表查询" class="form-control" value="$!logicTable.tableName">
+                </div>
+            </div>
+            <div class="group">
+                <label for="environment" class="col-sm-4 input-label">环境:</label>
+                <div class="col-sm-8">
+                    <select id="environment" name="environment" class="form-control">
+                        <option value="1">daily</option>
+                        <option value="2">online</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success appInfo"#* onclick="inquiryList()"*#>查询</button>
+        </form>
+        <h4 class="title">逻辑表List</h4>
+        #if($logicTables.size()==0)
+            <h5 style="padding: 20px;color: #999;float: left;">暂无数据,请等待...</h5>
+        #else
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>逻辑表名</th>
+                    <th>分表字段</th>
+                    <th>分表规则</th>
+                    <th>最后修改时间</th>
+                    <th style="width:200px">操作</th>
+                </tr>
+                </thead>
+                <tbody id="PDDLInquiry">
+                    #foreach($logicTable in $logicTables)
+                    <tr>
+                        <td>$!logicTable.tableName</td>
+                        <td>$!logicTable.shardColumn</td>
+                        <td>$!logicTable.dbCount 库 $!logicTable.tbCount 表</td>
+                        <td>$dateUtil.getString($!logicTable.gmtModify)</td>
+                        <td>
+                            <button class='btn btn-info' onclick='btnInfo(this)' data-table-id='$!logicTable.id' data-tableName='$!logicTable.tableName' data-shardColumn='$!logicTable.shardColumn'>查询</button>
+                            <button class='btn btn-info' data-table-id='$!logicTable.id' data-tableName='$!logicTable.tableName' data-shardrule='$!logicTable.shardRule' data-shardColumn='$!logicTable.shardColumn'><a href='/dbplus/logictable/table_fields?relation_id=$!logicTable.id&tableName=$!logicTable.tableName' class='href' style='color:#fff'>编辑</a></button>
+                        </td>
+                    </tr>
+                    #end
+                </tbody>
+            </table>
+        #end
+        <div class="newLook" hidden>
+            <div class="inquiryResult">
+                <form action=""  class="col-sm-12">
+                    <div class="group col-sm-3">
+                        <label class="col-sm-6 input-label">选择分表字段:</label>
+                        <div class="col-sm-6" style="padding: 0;">
+                            <select name="shardColumn" id="shard-column" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="group col-sm-3">
+                        <label class="col-sm-4 input-label">字段值:</label>
+                        <div class="col-sm-8">
+                            <input type="text" name='appName' id="input-box" class="form-control">
+                        </div>
+                    </div>
+                    <div class="group col-sm-4">
+                        <label class="col-sm-4 input-label">附加sql:</label>
+                        <div class="col-sm-8">
+                            <input type="text" name='appName' id="id" placeholder="and is_deleted=0" class="form-control">
+                        </div>
+                    </div>
+                    <!-- <div class="group col-sm-2">
+                        <label class="col-sm-4 input-label">限制:</label>
+                        <div class="col-sm-8">
+                            <input type="text" name='limit' id="limit" value="20" class="form-control">
+                        </div>
+                    </div> -->
+                    <div class="btn btn-success" id="inquiryResult" onclick="inquiryResultBtn()">搜索</div>
+                </form>
+                <div class="table-model">
+                    <table class="table table-striped table-hover" id="inquiryTable">
+                        <thead id="inquiryThead"></thead>
+                        <tbody id="inquiryTbody"></tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $("#appName").val($(".main-body").attr("data-app"));
+    var key=window.location.href.split("?")[1]?window.location.href.split("?")[1]:"";
+    var keyArr=key.split("&")?key.split("&"):key;
+    var keyJsonArr=[];
+    if(key!=""){
+        for(var i=0;i<keyArr.length;i++){
+            var keyJson={}
+            keyJson.key=keyArr[i].split("=")[0];
+            keyJson.value=keyArr[i].split("=")[1];
+            keyJsonArr.push(keyJson)
+        }
+        for(var j=0;j<keyJsonArr.length;j++){
+            $("input[name^="+keyJsonArr[j].key+"]").val(keyJsonArr[j].value)
+        }
+    }
+</script>

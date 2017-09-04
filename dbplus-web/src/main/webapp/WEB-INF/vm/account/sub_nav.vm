@@ -1,0 +1,7 @@
+<div class="span2">
+	<div class="well" style="padding: 8px 0;">
+		<ul class="nav nav-list right-arrow-sidebar">
+			<li #if($sub_nav_at == "user_list")class="active"#end><a href="/account/user/list"><i class="icon-chevron-right"></i>用户列表</a></li>
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,35 @@
+html,body{
+    height: 100%;
+    font-family: "Arial","Microsoft YaHei",Helvetica,'Hiragino Sans GB',SimHei,SimSun,sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    overflow: hidden;
+}
+*{
+    box-sizing:border-box;
+    word-break: break-all;
+}
+html,body,h1,h2,h3,h4,h5,h6,p,pre,table,thead,tbody,tfoot,ul,li,td,th,dd,dt,ol,input,button,select,textarea,img{
+    margin: 0;
+    padding: 0;
+}
+ul,li,td,th,dd,dt,ol{
+    list-style: none;
+}
+a{
+    color: #333;
+    text-decoration: none;
+}
+a:hover,a:focus{
+    text-decoration: none;
+    color: #333;
+}
+input, select, option, textarea, button {
+    outline: none;
+    box-shadow: none;
+}
+input:focus, select:focus, option:focus, textarea:focus, button :focus{
+    outline: none;
+    box-shadow: none!important;
+}

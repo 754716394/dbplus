@@ -1,0 +1,46 @@
+#set($layout="common/layout_min.vm")
+<div class="modal hide fade modal-large" id="modifyModal">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3>设置用户角色</h3>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal form-signin" style="border:0;" id="modify_user" action="/account/user/auth/do/" method="POST">
+            <fieldset>
+				<input type="hidden" id="id" name="id" value="$!user.id"/>
+				<div class="control-group" id="nick_control">
+                    <label class="control-label" for="nick">昵称</label>
+                    <div class="controls controls-row">
+                        <input type="text" class="input-xlarge" id="nick" name="nick" readonly value="$!user.nick"/>
+                    </div>
+                </div>
+				<div class="control-group" id="role_control">
+                    <label class="control-label" for="role">角色</label>
+                    <div class="controls controls-row">
+                        <select id="role" name="role" class="span2">
+    						#foreach($role in $roles)
+    							#if("$!role.id" == "1" && "$login_user.authId" == "1" || "$!role.id" != "1")
+    							<option value="$!role.id" #if("$!user.authId" == "$!role.id")selected#end>$!role.cname</option>
+    							#end
+    						#end
+                        </select>
+                    </div>
+                </div>
+				
+                <div style="margin-left: 180px;">
+                    <button id="sub_modify_user" type="submit" class="btn btn-primary">确定</button>   
+					<a class="btn" href="#" onclick="$('#modifyModal').modal('hide');">取消</a>
+                </div>
+            </fieldset>
+        </form>
+		
+    	<div id="form_error" class="alert alert-error" #if("$!is_success" == "false")style="display:block;"#end>
+    		<a name="form_error"></a>
+    		<span>$!msg</span>
+        </div>
+	</div>
+</div>
+
+<script src="/assets/js/form.js"></script>
+<script src="/assets/js/account/user.js"></script>
+

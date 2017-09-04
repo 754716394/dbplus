@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+       default-autowire="byName">
+
+    <!-- DAO begin -->
+    <bean id="userDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.pamirs.dbplus.core.dao.UserDAO"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+    <bean id="logicTableDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.pamirs.dbplus.core.dao.LogicTableDAO"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+
+    <bean id="logicDbDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.pamirs.dbplus.core.dao.LogicDbDAO"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+
+    <bean id="logicTableFiledsDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.pamirs.dbplus.core.dao.LogicTableFiledsDAO"></property>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+    <!-- DAO end -->
+
+    <!-- service begin -->
+    <bean id="userService" class="com.pamirs.dbplus.core.service.account.UserServiceImpl"/>
+    <bean id="logicDbService" class="com.pamirs.dbplus.core.service.table.LogicDbServiceImpl"></bean>
+    <bean id="logicTableService" class="com.pamirs.dbplus.core.service.table.LogicTableServiceImpl"></bean>
+    <bean id="logicTableFiledsService" class="com.pamirs.dbplus.core.service.table.LogicTableFiledsServiceImpl"></bean>
+    <bean id="jadeConfService" class="com.pamirs.dbplus.core.service.table.JadeConfServiceImpl"></bean>
+    <bean id="pddlSqlService" class="com.pamirs.dbplus.core.service.table.PddlSqlServiceImpl"></bean>
+    <!-- service end -->
+
+    <bean id="velocityEngineName" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+            <props>
+                <prop key="file.resource.loader.class">
+                    org.apache.velocity.runtime.resource.loader.StringResourceLoader
+                </prop>
+                <prop key="input.encoding">UTF-8</prop>
+                <prop key="output.encoding">UTF-8</prop>
+            </props>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,85 @@
+#if($paginator)
+<div class="pagination">
+	<ul>
+	#if($paginator and $paginator.pageNum > 1)
+	#if($paginator.index == 1)
+        <li class="disabled"><a href="#">&lt;</a></li>
+	#else
+		#set($page = $paginator.index - 1)
+		<li><a href="javascript:basicOper.page('page=$page');">&lt;</a></li>
+	#end
+
+	#if($paginator.isBreakLeft())
+		#set($page_end = $paginator.breakspace)
+		#if($page_end >= 1)
+		#foreach($i in [1..$page_end])
+			<li><a href="javascript:basicOper.page('page=$i');">$i</a></li>
+		#end
+		#end
+		<li><a>...</a></li>
+		#set($page_start = $paginator.pageNum - $paginator.breakpage + 1)
+		#set($page_end = $paginator.prevnum - 1)
+		#if($page_end >= $page_start)
+		#foreach($i in [$page_start..$page_end])
+            <li><a href="javascript:basicOper.page('page=$i');">$i</a></li>
+		#end
+		#end
+	#else
+		#set($page_end = $paginator.prevnum - 1)
+		#if($page_end >= 1)
+		#foreach($i in [1..$page_end])
+			<li><a href="javascript:basicOper.page('page=$i');">$i</a></li>
+		#end
+		#end
+	#end
+
+	#set($page_end = $paginator.nextnum)
+	#if($page_end >= $paginator.prevnum)
+	#foreach($i in [$paginator.prevnum..$page_end])
+		#if($paginator.index == $i)
+            <li class="active"><a href="#">$i</a></li>
+		#else
+			<li><a href="javascript:basicOper.page('page=$i');">$i</a></li>
+		#end
+	#end
+	#end
+
+	#if($paginator.isBreakRight())
+		#set($page_start = $paginator.nextnum + 1)
+		#set($page_end = $paginator.breakpage)
+		#if($page_end >= $page_start)
+		#foreach($i in [$page_start..$page_end])
+			<li><a href="javascript:basicOper.page('page=$i');">$i</a></li>
+		#end
+		#end
+		
+		<li class="disabled"><a href="#">...</a></li>
+		#set($page_start = $paginator.pageNum - $paginator.breakspace + 1)
+		#set($page_end = $paginator.pageNum)
+		#if($page_end >= $page_start)
+		#foreach($i in [$page_start..$page_end])
+            <li><a href="javascript:basicOper.page('page=$i');">$i</a></li>
+		#end
+		#end
+	#else
+		#set($page_start = $paginator.nextnum + 1)
+		#set($page_end = $paginator.pageNum)
+		#if($page_end >= $page_start)
+		#foreach($i in [$page_start..$page_end])
+            <li><a href="javascript:basicOper.page('page=$i');">$i</a></li>
+		#end
+		#end
+	#end
+
+	#if($paginator.index==$paginator.pageNum)
+		<li class="disabled"><a href="#">&gt;</a></li>
+	#else
+		#set($page=$paginator.index + 1)
+		<li><a href="javascript:basicOper.page('page=$page');">&gt;</a></li>
+	#end
+	#end
+	<li class="disabled"><a href="#">每页$paginator.limit条/共$paginator.total条记录</a></li>
+##		<li class="disabled"><a href="javascript:void(0);">每页<input id="pageSize" style="width:30px;height:15px;padding:0 2px 0 2px;" value="$paginator.limit" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'')"/>条/共$paginator.total条记录</a></li>
+	</ul>
+</div>
+#end

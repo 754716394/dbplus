@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<!-- FIXME 更换 -->
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%p [%d{HH:mm:ss,SSS}] [%t] %c{1}.%M(%L) | %m%n" />
+		</layout>
+	</appender>
+ 
+
+	<logger name="org.apache">
+		<level value="ERROR" />
+	</logger>
+
+	<logger name="org.jboss">
+		<level value="ERROR" />
+	</logger>
+
+	<logger name="org.apache.velocity">
+		<level value="FATAL" />
+	</logger>
+
+	<logger name="org.apache.zookeeper">
+		<level value="warn" />
+	</logger>
+	<logger name="java.sql">
+		<level value="warn" />
+	</logger>
+	<logger name="org.springframework">
+		<level value="warn" />
+	</logger>
+	<logger name="com.mchange">
+		<level value="warn" />
+	</logger>
+	<logger name="org.I0Itec">
+		<level value="warn" />
+	</logger>
+	<logger name="org.unitils">
+		<level value="warn" />
+	</logger>
+	<logger name="com.pamirs.dbplus.web.controller">
+		<level value="ERROR" />
+	</logger>
+
+	<logger name="gateway-connect" additivity="false">
+		<level value="trace" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+
+	<logger name="gateway-api" additivity="false">
+		<level value="trace" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+
+	<logger name="gateway-trace" additivity="false">
+		<level value="trace" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+
+	 
+	<root>
+		<level value="ERROR" />
+		<appender-ref ref="CONSOLE" />
+	</root>
+</log4j:configuration>
